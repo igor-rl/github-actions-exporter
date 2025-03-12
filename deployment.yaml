@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-actions-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: github-actions-exporter
+  template:
+    metadata:
+      labels:
+        app: github-actions-exporter
+    spec:
+      containers:
+        - name: github-actions-exporter
+          image: ghcr.io/bensommer/gitlab-exporter:latest
+          env:
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: github-token-secret
+                  key: token
+            - name: REPOSITORY_OWNER
+              value: "<nome_do_dono_do_repositorio>"
+            - name: REPOSITORY_NAME
+              value: "<nome_do_repositorio>"
+          ports:
+            - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: github-actions-exporter
+spec:
+  selector:
+    app: github-actions-exporter
+  ports:
+    - port: 8000
+      targetPort: 8000
