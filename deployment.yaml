@@ -11,22 +11,22 @@ spec:
     metadata:
       labels:
         app: github-actions-exporter
-    spec:
-      containers:
-        - name: github-actions-exporter
-          image: ghcr.io/bensommer/gitlab-exporter:latest
-          env:
-            - name: GITHUB_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: github-token-secret
-                  key: token
-            - name: REPOSITORY_OWNER
-              value: "<nome_do_dono_do_repositorio>"
-            - name: REPOSITORY_NAME
-              value: "<nome_do_repositorio>"
-          ports:
-            - containerPort: 8000
+  spec:
+    containers:
+      - name: github-actions-exporter
+        image: ghcr.io/bensommer/gitlab-exporter:latest
+        env:
+          - name: GITHUB_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: github-token-secret
+                key: token
+          - name: REPOSITORY_OWNER
+            value: "storage-app-br"
+          - name: REPOSITORY_NAME
+            value: "schedeasy-simple-api"
+        ports:
+          - containerPort: 8000
 ---
 apiVersion: v1
 kind: Service
